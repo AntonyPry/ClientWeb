@@ -6,6 +6,7 @@ import { Table } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 
 function App() {
+  //интерфейс таблицы
   interface DataType {
     id: number;
     name: string;
@@ -16,7 +17,7 @@ function App() {
   const columns: ColumnsType<DataType> = [
     {
       title: 'Id',
-      dataIndex: 'key',
+      dataIndex: 'id',
       key: 'id',
     },
     {
@@ -38,25 +39,25 @@ function App() {
 
   const dataSource: DataType[] = [
     {
-      id: '1',
+      id: 1,
       name: 'BTC',  
       company: 'BTC',
       rate: 43145.53,
     },
     {
-      id: '2',
+      id: 2,
       name: 'USDT',
       company: 'Tether',
       rate: 1,
     },
     {
-      id: '3',
+      id: 3,
       name: 'SOL',
       company: 'Solana',
       rate: 111.91,
     },
     {
-      id: '4',
+      id: 4,
       name: 'ETH',
       company: 'Etherium',
       rate: 2275.90,
