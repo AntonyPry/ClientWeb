@@ -1,72 +1,54 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import { Table } from 'antd'
 import { ColumnsType } from 'antd/es/table'
+import axios from 'axios';
 
 function App() {
-  //интерфейс таблицы
   interface DataType {
-    id: number;
+    country: string;
     name: string;
-    company: string;
-    rate: number;
   }
-
+  
   const columns: ColumnsType<DataType> = [
     {
-      title: 'Id',
-      dataIndex: 'id',
-      key: 'id',
+      title: 'Страна',
+      dataIndex: 'country',
+      key: 'country',
     },
     {
-      title: 'Name',
+      title: 'Название школы',
       dataIndex: 'name',
       key: 'name',
     },
-    {
-      title: 'Company',
-      dataIndex: 'company',
-      key: 'company',
-    },
-    {
-      title: 'Rate, $',
-      dataIndex: 'rate',
-      key: 'rate',
-    },
-  ];
+  ]
 
-  const dataSource: DataType[] = [
-    {
-      id: 1,
-      name: 'BTC',  
-      company: 'BTC',
-      rate: 43145.53,
-    },
-    {
-      id: 2,
-      name: 'USDT',
-      company: 'Tether',
-      rate: 1,
-    },
-    {
-      id: 3,
-      name: 'SOL',
-      company: 'Solana',
-      rate: 111.91,
-    },
-    {
-      id: 4,
-      name: 'ETH',
-      company: 'Etherium',
-      rate: 2275.90,
-    },
-  ];
+  const [page, setPage] = useState<number>(1);
+  const [dataSource, setDataSource] = useState<DataType[]>([]);
+
+  const LIMIT_LIST_SCHOOL = 10;
+
+  const getUniversity = async (page: number, limit: number) => {
+    const response = await axios.get(`http://universities.hipolabs.com/search?offset=${(page - 1) * limit}&limit=${limit}`);
+    setDataSource(response.data);
+  };
+
+  useEffect(() => {
+    getUniversity(page, LIMIT_LIST_SCHOOL);
+  }, [page]);
 
   return (
-    <Table dataSource={dataSource} columns={columns} />
-  )
+    <>
+      <Table dataSource={dataSource} columns={columns} pagination={false} />
+      <button onClick={() => setPage(page - 1)} disabled={page === 1}>
+        Назад
+      </button>
+      <button onClick={() => setPage(page + 1)}>Вперед</button>
+      <p>{page}</p>
+    </>
+  );
 }
 
 export default App
