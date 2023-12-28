@@ -8,35 +8,46 @@ import axios from 'axios';
 
 function App() {
   interface DataType {
-    country: string;
     name: string;
+    status: string;
+    species: string;
   }
   
   const columns: ColumnsType<DataType> = [
     {
-      title: 'Страна',
-      dataIndex: 'country',
-      key: 'country',
-    },
-    {
-      title: 'Название школы',
+      title: 'Персонаж',
       dataIndex: 'name',
       key: 'name',
+    },
+    {
+      title: 'Статус',
+      dataIndex: 'status',
+      key: 'status',
+    },
+    {
+      title: 'Род',
+      dataIndex: 'species',
+      key: 'species',
     },
   ]
 
   const [page, setPage] = useState<number>(1);
   const [dataSource, setDataSource] = useState<DataType[]>([]);
 
-  const LIMIT_LIST_SCHOOL = 10;
-
-  const getUniversity = async (page: number, limit: number) => {
-    const response = await axios.get(`http://universities.hipolabs.com/search?offset=${(page - 1) * limit}&limit=${limit}`);
+  const LIMIT_LIST_CHARACTERS = 10;
+  const getCharacters = async (page: number, limit: number) => {
+    const character_list = new Array();
+    for (let i = 1; i <= 10; i++){
+      character_list.push((page-1)*limit+i)
+    }
+    const response = await axios.get(`https://rickandmortyapi.com/api/character/${character_list.join(',')}`);
+    const json = response.data;
+    console.log(json);
     setDataSource(response.data);
   };
 
   useEffect(() => {
-    getUniversity(page, LIMIT_LIST_SCHOOL);
+    getCharacters(page, LIMIT_LIST_CHARACTERS);
   }, [page]);
 
   return (
@@ -45,7 +56,7 @@ function App() {
       <button onClick={() => setPage(page - 1)} disabled={page === 1}>
         Назад
       </button>
-      <button onClick={() => setPage(page + 1)}>Вперед</button>
+      <button onClick={() => setPage(page + 1)} disabled={page === 83}>Вперед</button>
       <p>{page}</p>
     </>
   );
