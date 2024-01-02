@@ -28,3 +28,11 @@ export default {
 - Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
 - Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
 - Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+
+
+# Страницы для 3 модуля:
+
+- Персонажи: информация о персонаже, месте его рождения, происхождении, расе и тд.
+- Локации: информация о локации, измерение, тип
+- Эпизоды: название, номер, дата создания эпизода
+- Карточка персонажа: шаблонная страница для каждого персонажа
