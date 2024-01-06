@@ -1,10 +1,13 @@
 //Users/antonypry/Documents/Учеба/Политех/3 семестр/Веб-клиент/web-client/src/pages/Characters_list.tsx
-import { useEffect, useState } from 'react'
-import { Table } from 'antd'
-import { ColumnsType } from 'antd/es/table'
+import { useEffect, useState } from 'react';
+import { Table } from 'antd';
+import { ColumnsType } from 'antd/es/table';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 import { CHARACTER_ROUTE } from '../app/routes/configs';
+
+const LIMIT_LIST_CHARACTERS = 10;
+const LIMIT_CHARACTERS_PAGES = 83;
 
 function Characters_list() {
   interface DataType {
@@ -13,7 +16,7 @@ function Characters_list() {
     status: string;
     species: string;
   }
-  
+
   const columns: ColumnsType<DataType> = [
     {
       title: 'Персонаж',
@@ -34,24 +37,26 @@ function Characters_list() {
       title: 'Действия',
       key: 'action',
       render: (_text, record) => (
-        <button onClick={() => handleCharacterDetails(record.id)}>Подробнее</button>
+        <button onClick={() => handleCharacterDetails(record.id)}>
+          Подробнее
+        </button>
       ),
     },
-  ]
+  ];
 
   const [page, setPage] = useState<number>(1);
   const [dataSource, setDataSource] = useState<DataType[]>([]);
 
-  const LIMIT_LIST_CHARACTERS = 10;
   const getCharacters = async (page: number, limit: number) => {
     const character_list = new Array();
-    for (let i = 1; i <= 10; i++){
-      character_list.push((page-1)*limit+i)
+    for (let i = 1; i <= 10; i++) {
+      character_list.push((page - 1) * limit + i);
     }
-    const response = await axios.get(`https://rickandmortyapi.com/api/character/${character_list.join(',')}`);
-    const json = response.data;
-    console.log(json);
-    setDataSource(response.data);
+    const { data } = await axios.get(
+      `https://rickandmortyapi.com/api/character/${character_list.join(',')}`
+    );
+    console.log(data);
+    setDataSource(data);
   };
 
   const navigate = useNavigate();
@@ -60,7 +65,6 @@ function Characters_list() {
     navigate(`/${CHARACTER_ROUTE}/${characterId}`);
   };
 
-
   useEffect(() => {
     getCharacters(page, LIMIT_LIST_CHARACTERS);
   }, [page]);
@@ -68,11 +72,18 @@ function Characters_list() {
   return (
     <>
       <Table dataSource={dataSource} columns={columns} pagination={false} />
-      <button onClick={() => setPage(page - 1)} disabled={page === 1}>Назад</button>
-      <button onClick={() => setPage(page + 1)} disabled={page === 83}>Вперед</button>
+      <button onClick={() => setPage(page - 1)} disabled={page === 1}>
+        Назад
+      </button>
+      <button
+        onClick={() => setPage(page + 1)}
+        disabled={page === LIMIT_CHARACTERS_PAGES}
+      >
+        Вперед
+      </button>
       <p>{page}</p>
     </>
   );
 }
 
-export default Characters_list
+export default Characters_list;
