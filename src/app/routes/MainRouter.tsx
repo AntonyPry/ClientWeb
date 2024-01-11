@@ -3,10 +3,10 @@ import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
 import Character from '../../pages/Character';
 import Characters_list from '../../pages/CharactersList';
 import Episodes from '../../pages/Episodes';
-import Locations from '../../pages/Locations';
+import Register from '../../pages/Register';
 import {
   CHARACTERS_LIST_ROUTE,
-  LOCATIONS_ROUTE,
+  REGISTER_ROUTE,
   EPISODES_ROUTE,
   CHARACTER_ROUTE,
 } from './configs';
@@ -14,7 +14,7 @@ import {
 const MainRouter = ({ isAuth = false }) => {
   const basedPath: RouteObject[] = [
     { path: CHARACTERS_LIST_ROUTE, element: <Characters_list /> },
-    { path: LOCATIONS_ROUTE, element: <Locations /> },
+    { path: REGISTER_ROUTE, element: <Register /> },
     { path: EPISODES_ROUTE, element: <Episodes /> },
     { path: '*', element: <Navigate to={'/'} replace /> },
   ];
